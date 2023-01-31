@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - white
+  - red
+  - green
+  - map_limit
   layers:
   - Default
   - TransparentFX
