@@ -14,7 +14,13 @@ public class player_controller : MonoBehaviour
     public int acc;
     public int dacc;
     public int consta;
-    
+    private bool going_up;
+    private bool going_down;
+    private bool going_right;
+    private bool going_left;
+    private int counter;
+    private Vector3 movement_vec;
+    public bool moving;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,30 +31,126 @@ public class player_controller : MonoBehaviour
         acc = 21;
         dacc = 81;
         consta = 100;
-        
+        going_up = false;
+        going_down = false;
+        going_left = false;
+        going_right = false;
+        counter = 1;
+        movement_vec = new Vector3(0, 0, 0);
+        moving = false;
     }
-    
+    private void Update()
+    {
+        if(going_up)
+        {
+            if(counter <501)
+            {
+                movement_vec.y = (2f/(500f*500f*Time.deltaTime)) * Time.deltaTime *counter;
+            }
+            else
+            {
+                movement_vec.y = (2f / (500f * 500f * Time.deltaTime)) * Time.deltaTime * (1000-counter);
+            }
+            transform.Translate(movement_vec);
+            counter++;
+            if(counter == 1001)
+            {
+                going_up = false;
+                moving = false;
+            }
+        }
+        else if(going_down)
+        {
+            if (counter < 501)
+            {
+                movement_vec.y = (2f / (500f * 500f * Time.deltaTime)) * Time.deltaTime * counter*(-1);
+            }
+            else
+            {
+                movement_vec.y = (2f / (500f * 500f * Time.deltaTime)) * Time.deltaTime * (1000 - counter)*(-1);
+            }
+            transform.Translate(movement_vec);
+            counter++;
+            if (counter == 1001)
+            {
+                going_down = false;
+                moving = false;
+            }
+        }
+        else if(going_left)
+        {
+            if (counter < 501)
+            {
+                movement_vec.x = (2f / (500f * 500f * Time.deltaTime)) * Time.deltaTime * counter * (-1);
+            }
+            else
+            {
+                movement_vec.x = (2f / (500f * 500f * Time.deltaTime)) * Time.deltaTime * (1000 - counter) * (-1);
+            }
+            transform.Translate(movement_vec);
+            counter++;
+            if (counter == 1001)
+            {
+                going_left = false;
+                moving = false;
+            }
+        }
+        else if(going_right)
+        {
+            if (counter < 501)
+            {
+                movement_vec.x = (2f / (500f * 500f * Time.deltaTime)) * Time.deltaTime * counter;
+            }
+            else
+            {
+                movement_vec.x = (2f / (500f * 500f * Time.deltaTime)) * Time.deltaTime * (1000 - counter);
+            }
+            transform.Translate(movement_vec);
+            counter++;
+            if (counter == 1001)
+            {
+                
+                going_right = false;
+                moving = false;
+            }
+        }
+        else
+        {
+            counter = 0;
+            moving = false;
+        }
+    }
     // Update is called once per frame
     void LateUpdate()
     {
 
-        if (Input.GetKeyDown(KeyCode.UpArrow) && ud)
+        if(!moving)
         {
-            //go_upp = true;
-            //go_up();
-            transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow) && d)
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y - 2, transform.position.z);
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && r)
-        {
-            transform.position = new Vector3(transform.position.x + 2, transform.position.y, transform.position.z);
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) && l)
-        {
-            transform.position = new Vector3(transform.position.x - 2, transform.position.y, transform.position.z);
+            if (Input.GetKeyDown(KeyCode.UpArrow) && ud)
+            {
+                //go_upp = true;
+                going_up = true;
+                moving = true;
+                //transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
+            }
+            else if (Input.GetKeyDown(KeyCode.DownArrow) && d)
+            {
+                going_down = true;
+                moving = true;
+                //transform.position = new Vector3(transform.position.x, transform.position.y - 2, transform.position.z);
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow) && r)
+            {
+                going_right = true;
+                moving = true;
+                //transform.position = new Vector3(transform.position.x + 2, transform.position.y, transform.position.z);
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftArrow) && l)
+            {
+                going_left = true;
+                moving = true;
+                //transform.position = new Vector3(transform.position.x - 2, transform.position.y, transform.position.z);
+            }
         }
 
 
@@ -127,6 +229,7 @@ public class player_controller : MonoBehaviour
         }
 
     }
+    
     
    
 }
